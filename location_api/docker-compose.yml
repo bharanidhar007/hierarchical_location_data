@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    container_name: location_api
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/app
+
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: location_db
+    environment:
+      POSTGRES_DB: locations
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: location_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
