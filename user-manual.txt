@@ -1,0 +1,41 @@
+What’s inside (highlights)
+
+REST endpoints for /countries, /states, /cities, /towns with search (q), filters (by parent id), and pagination (limit, offset).
+
+Caching: Redis via fastapi-cache2 on list endpoints; TTL configurable.
+
+DB & Migrations: SQLAlchemy models, Alembic env + initial migration with indexes and trigram search extensions.
+
+Geospatial (optional): POINT geometry via GeoAlchemy2 & PostGIS; toggle with USE_POSTGIS.
+
+Multilingual: translations JSONB on all entities (e.g., { "es": {"name": "España"} }).
+
+GraphQL (optional): Strawberry schema mounted at /graphql for quick querying.
+
+Seed data: India/US with a few states, cities, towns.
+
+Tests: basic health and endpoint/pagination checks.
+
+Dockerized: docker-compose runs API, PostGIS, Redis.
+
+Quickstart
+
+Copy env and start:
+
+cp .env.example .env
+docker compose up --build
+
+
+Apply DB migration & seed:
+
+docker compose exec api alembic upgrade head
+docker compose exec api python scripts/seed_data.py
+
+
+Open:
+
+Swagger: http://localhost:8000/docs
+
+GraphQL: http://localhost:8000/graphql
+
+If you want MySQL instead of Postgres, or a GraphQL-only variant, or want me to add bulk import/export, auth/roles, rate limiting, or CI (GitHub Actions), say the word and I’ll ship an updated zip
